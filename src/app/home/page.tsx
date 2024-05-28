@@ -109,6 +109,10 @@ const Home: React.FC = () => {
     router.push("/login");
   };
 
+  const about = () => {
+    router.push("/home/about");
+  }
+
 
   return (
     <div className="container">
@@ -146,6 +150,7 @@ const Home: React.FC = () => {
             />
             <button onClick={addUser}>Add User</button>
             <button onClick={handleLogout}>Delete</button>
+            <button onClick={about}>About</button>
           </div>
           <ul className="userList">
             {users.map((user) => (
