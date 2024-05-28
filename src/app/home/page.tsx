@@ -34,8 +34,6 @@ const Home: React.FC = () => {
     }
   }, [router]);
 
-
-
   const fetchUsers = async () => {
     try {
       const response = await axios.get(
@@ -48,7 +46,6 @@ const Home: React.FC = () => {
       setLoading(false);
     }
   };
-
 
   const addUser = async () => {
     try {
@@ -63,7 +60,6 @@ const Home: React.FC = () => {
     }
   };
 
- 
   const updateUser = async (id: string, updatedUser: Partial<User>) => {
     try {
       console.log("Updating user:", id, updatedUser);
@@ -78,15 +74,13 @@ const Home: React.FC = () => {
             user.id === id ? { ...user, ...updatedUser } : user
           )
         );
-        
+
         setNewUser({ id: "", firstName: "", lastName: "", createdAt: "" });
       }
     } catch (error) {
       console.error("Failed to update user:", error);
     }
   };
-
-   
 
   const deleteUser = async (id: string) => {
     try {
@@ -99,7 +93,6 @@ const Home: React.FC = () => {
     }
   };
 
- 
   if (loading) {
     return <h1>Loading...</h1>;
   }
@@ -111,8 +104,7 @@ const Home: React.FC = () => {
 
   const about = () => {
     router.push("/home/about");
-  }
-
+  };
 
   return (
     <div className="container">

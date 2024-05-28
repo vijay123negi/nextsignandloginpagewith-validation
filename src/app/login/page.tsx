@@ -21,7 +21,7 @@ const Login: React.FC = () => {
     useFormik({
       initialValues: initialValues,
       validationSchema: loginSchema,
-      onSubmit: (values, { resetForm }) => {
+      onSubmit: (values, action) => {
         if (typeof window !== "undefined") {
           const storedUser = localStorage.getItem("users");
           if (storedUser) {
@@ -39,7 +39,7 @@ const Login: React.FC = () => {
             alert("No user found. Please sign up.");
           }
         }
-        resetForm();
+        action.resetForm();
       },
     });
 
