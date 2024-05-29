@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import Authlayout from "../authlayout/page";
 
 interface User {
   id: string;
@@ -11,7 +12,6 @@ interface User {
 }
 
 const Home: React.FC = () => {
-  const [authenticated, setAuthenticated] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [newUser, setNewUser] = useState<User>({
@@ -23,14 +23,8 @@ const Home: React.FC = () => {
   const router = useRouter();
 
   useEffect(() => {
-      const auth = localStorage.getItem("authenticated");
-      if (auth === "true") {
-        setAuthenticated(true);
-        fetchUsers();
-      } else {
-        router.push("/login");
-      }
-  }, [router]);
+    fetchUsers();
+  }, []);
 
   const fetchUsers = async () => {
     try {
@@ -60,19 +54,16 @@ const Home: React.FC = () => {
 
   const updateUser = async (id: string, updatedUser: Partial<User>) => {
     try {
-      console.log("Updating user:", id, updatedUser);
       const response = await axios.put(
         `https://660a54c30f324a9a2884ab85.mockapi.io/users/${id}`,
         updatedUser
       );
-      console.log("Update response:", response);
       if (response.status === 200) {
         setUsers(
           users.map((user) =>
             user.id === id ? { ...user, ...updatedUser } : user
           )
         );
-
         setNewUser({ id: "", firstName: "", lastName: "", createdAt: "" });
       }
     } catch (error) {
@@ -91,11 +82,8 @@ const Home: React.FC = () => {
     }
   };
 
-  if (loading) {
-    return <h1>Loading...</h1>;
-  }
   const handleLogout = () => {
-    localStorage.removeItem("user");
+    localStorage.removeItem("users");
     localStorage.removeItem("authenticated");
     router.push("/login");
   };
@@ -104,9 +92,17 @@ const Home: React.FC = () => {
     router.push("/home/about");
   };
 
+  const help = () => {
+    router.push("/home/help");
+  }
+
+  if (loading) {
+    return <h1>Loading...</h1>;
+  }
+
   return (
-    <div className="container">
-      {authenticated ? (
+    <Authlayout>
+      <div className="container">
         <>
           <h1 className="title">Welcome to the Home Page!</h1>
           <div className="addUserContainer">
@@ -139,8 +135,9 @@ const Home: React.FC = () => {
               }
             />
             <button onClick={addUser}>Add User</button>
-            <button onClick={handleLogout}>Delete</button>
+            <button onClick={handleLogout}>Logout</button>
             <button onClick={about}>About</button>
+            <button onClick={help}>Help</button>
           </div>
           <ul className="userList">
             {users.map((user) => (
@@ -169,10 +166,8 @@ const Home: React.FC = () => {
             ))}
           </ul>
         </>
-      ) : (
-        <h1>Loading...</h1>
-      )}
-    </div>
+      </div>
+    </Authlayout>
   );
 };
 
