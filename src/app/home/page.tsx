@@ -23,7 +23,6 @@ const Home: React.FC = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
       const auth = localStorage.getItem("authenticated");
       if (auth === "true") {
         setAuthenticated(true);
@@ -31,7 +30,6 @@ const Home: React.FC = () => {
       } else {
         router.push("/login");
       }
-    }
   }, [router]);
 
   const fetchUsers = async () => {

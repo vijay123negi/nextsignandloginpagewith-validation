@@ -22,7 +22,6 @@ const Login: React.FC = () => {
       initialValues: initialValues,
       validationSchema: loginSchema,
       onSubmit: (values, action) => {
-        if (typeof window !== "undefined") {
           const storedUser = localStorage.getItem("users");
           if (storedUser) {
             const user = JSON.parse(storedUser);
@@ -38,7 +37,7 @@ const Login: React.FC = () => {
           } else {
             alert("No user found. Please sign up.");
           }
-        }
+        
         action.resetForm();
       },
     });
