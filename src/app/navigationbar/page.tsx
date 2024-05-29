@@ -16,7 +16,6 @@ const NavBar: React.FC = () => {
         <Link href="/home/about">About</Link>
         <Link href="/home/help">Help</Link>
       <button onClick={handleLogout}>Logout</button>
-      
     </nav>
   );
 };
