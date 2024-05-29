@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import Authlayout from "../authlayout/page";
+import NavBar from "../navigationbar/page";
 
 interface User {
   id: string;
@@ -39,7 +40,6 @@ const Home: React.FC = () => {
     }
   };
 
-
   const addUser = async () => {
     try {
       const response = await axios.post(
@@ -72,7 +72,6 @@ const Home: React.FC = () => {
     }
   };
 
-
   const deleteUser = async (id: string) => {
     try {
       await axios.delete(
@@ -84,90 +83,72 @@ const Home: React.FC = () => {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("users");
-    localStorage.removeItem("authenticated");
-    router.push("/login");
-  };
-
-  const about = () => {
-    router.push("/home/about");
-  };
-
-  const help = () => {
-    router.push("/home/help");
-  }
-
   if (loading) {
     return <h1>Loading...</h1>;
   }
 
   return (
     <Authlayout>
+      <NavBar />
       <div className="container">
-        <>
-          <h1 className="title">Welcome to the Home Page!</h1>
-          <div className="addUserContainer">
-            <h2>Add User</h2>
-            <input
-              type="text"
-              placeholder="First Name"
-              value={newUser.firstName}
-              autoComplete="off"
-              onChange={(e) =>
-                setNewUser({ ...newUser, firstName: e.target.value })
-              }
-            />
-            <input
-              type="text"
-              placeholder="Last Name"
-              value={newUser.lastName}
-              autoComplete="off"
-              onChange={(e) =>
-                setNewUser({ ...newUser, lastName: e.target.value })
-              }
-            />
-            <input
-              type="text"
-              placeholder="Created At"
-              value={newUser.createdAt}
-              autoComplete="off"
-              onChange={(e) =>
-                setNewUser({ ...newUser, createdAt: e.target.value })
-              }
-            />
-            <button onClick={addUser}>Add User</button>
-            <button onClick={handleLogout}>Logout</button>
-            <button onClick={about}>About</button>
-            <button onClick={help}>Help</button>
-          </div>
-          <ul className="userList">
-            {users.map((user) => (
-              <li key={user.id} className="userItem">
-                <div>
-                  <span>ID:</span> {user.id} <br />
-                  <span>First Name:</span> {user.firstName} <br />
-                  <span>Last Name:</span> {user.lastName} <br />
-                  <span>Created At:</span> {user.createdAt}
-                </div>
-                <div className="buttonsContainer">
-                  <button
-                    onClick={() =>
-                      updateUser(user.id, {
-                        firstName: newUser.firstName,
-                        lastName: newUser.lastName,
-                        createdAt: newUser.createdAt,
-                      })
-                    }
-                  >
-                    Update
-                  </button>
-                  <button onClick={() => deleteUser(user.id)}>Delete</button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </>
+        <h1 className="title">Welcome to the Home Page!</h1>
+        <div className="addUserContainer">
+          <h2>Add User</h2>
+          <input
+            type="text"
+            placeholder="First Name"
+            value={newUser.firstName}
+            autoComplete="off"
+            onChange={(e) =>
+              setNewUser({ ...newUser, firstName: e.target.value })
+            }
+          />
+          <input
+            type="text"
+            placeholder="Last Name"
+            value={newUser.lastName}
+            autoComplete="off"
+            onChange={(e) =>
+              setNewUser({ ...newUser, lastName: e.target.value })
+            }
+          />
+          <input
+            type="text"
+            placeholder="Created At"
+            value={newUser.createdAt}
+            autoComplete="off"
+            onChange={(e) =>
+              setNewUser({ ...newUser, createdAt: e.target.value })
+            }
+          />
+          <button onClick={addUser}>Add User</button>
+        </div>
+        <ul className="userList">
+          {users.map((user) => (
+            <li key={user.id} className="userItem">
+              <div>
+                <span>ID:</span> {user.id} <br />
+                <span>First Name:</span> {user.firstName} <br />
+                <span>Last Name:</span> {user.lastName} <br />
+                <span>Created At:</span> {user.createdAt}
+              </div>
+              <div className="buttonsContainer">
+                <button
+                  onClick={() =>
+                    updateUser(user.id, {
+                      firstName: newUser.firstName,
+                      lastName: newUser.lastName,
+                      createdAt: newUser.createdAt,
+                    })
+                  }
+                >
+                  Update
+                </button>
+                <button onClick={() => deleteUser(user.id)}>Delete</button>
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
     </Authlayout>
   );
