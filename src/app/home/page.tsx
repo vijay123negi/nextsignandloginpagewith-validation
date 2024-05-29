@@ -39,6 +39,7 @@ const Home: React.FC = () => {
     }
   };
 
+
   const addUser = async () => {
     try {
       const response = await axios.post(
@@ -70,6 +71,7 @@ const Home: React.FC = () => {
       console.error("Failed to update user:", error);
     }
   };
+
 
   const deleteUser = async (id: string) => {
     try {
