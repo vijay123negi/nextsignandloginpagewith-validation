@@ -13,9 +13,10 @@ const NavBar: React.FC = () => {
 
   return (
     <nav className="navbar">
-      <Link href="/home/about">About</Link>
-      <Link href="/home/help">Help</Link>
+        <Link href="/home/about">About</Link>
+        <Link href="/home/help">Help</Link>
       <button onClick={handleLogout}>Logout</button>
+      
     </nav>
   );
 };
