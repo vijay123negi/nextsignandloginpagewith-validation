@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import axios from "axios";
 import Authlayout from "../authlayout/page";
 import NavBar from "../navigationbar/page";
@@ -21,7 +20,6 @@ const Home: React.FC = () => {
     lastName: "",
     createdAt: "",
   });
-  const router = useRouter();
 
   useEffect(() => {
     fetchUsers();
