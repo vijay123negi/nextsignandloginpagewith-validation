@@ -67,6 +67,7 @@ const Home: React.FC = () => {
       }
     } catch (error) {
       console.error("Failed to update user:", error);
+      
     }
   };
 
