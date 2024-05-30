@@ -64,7 +64,6 @@ const Home: React.FC = () => {
           )
         );
         setNewUser({ id: "", firstName: "", lastName: "", createdAt: "" });
-        
       }
     } catch (error) {
       console.error("Failed to update user:", error);
