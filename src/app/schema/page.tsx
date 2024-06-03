@@ -14,3 +14,12 @@ export const loginSchema = Yup.object({
     .required("Please enter your email"),
   password: Yup.string().required("Please enter your password"),
 });
+
+export const drawerloginSchema = Yup.object({
+  firstName: Yup.string()
+    .min(2)
+    .max(25)
+    .required("please enter your first name"),
+  lastName: Yup.string().min(2).max(25).required("please enter your last name"),
+  createdAt: Yup.date().required("enter the date"),
+});

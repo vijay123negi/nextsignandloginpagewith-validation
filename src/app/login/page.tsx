@@ -22,22 +22,22 @@ const Login: React.FC = () => {
       initialValues: initialValues,
       validationSchema: loginSchema,
       onSubmit: (values, action) => {
-          const storedUser = localStorage.getItem("users");
-          if (storedUser) {
-            const user = JSON.parse(storedUser);
-            if (
-              user.email === values.email &&
-              user.password === values.password
-            ) {
-              localStorage.setItem("authenticated", "true");
-              router.push("/home");
-            } else {
-              alert("Invalid email or password");
-            }
+        const storedUser = localStorage.getItem("users");
+        if (storedUser) {
+          const user = JSON.parse(storedUser);
+          if (
+            user.email === values.email &&
+            user.password === values.password
+          ) {
+            localStorage.setItem("authenticated", "true");
+            router.push("/home");
           } else {
-            alert("No user found. Please sign up.");
+            alert("Invalid email or password");
           }
-        
+        } else {
+          alert("No user found. Please sign up.");
+        }
+
         action.resetForm();
       },
     });

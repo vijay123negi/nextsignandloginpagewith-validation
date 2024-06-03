@@ -22,18 +22,16 @@ const initialValues: SignupFormValues = {
 const Home: React.FC = () => {
   const router = useRouter();
 
-  const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
+  const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
+    useFormik({
       initialValues: initialValues,
       validationSchema: signUpSchema,
       onSubmit: (values, action) => {
-        if (typeof window !== "undefined") {
-          localStorage.setItem("users", JSON.stringify(values));
-        }
+        localStorage.setItem("users", JSON.stringify(values));
         action.resetForm();
         router.push("/login");
       },
     });
-
 
   return (
     <div className="container">
