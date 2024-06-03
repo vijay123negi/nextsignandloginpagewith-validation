@@ -4,6 +4,7 @@ import { drawerloginSchema } from "../schema/page";
 import React from "react";
 import axios from "axios";
 import Authlayout from "../authlayout/page";
+import { TextField } from "@mui/material";
 
 interface User {
   id: string;
@@ -52,7 +53,7 @@ const AddUser: React.FC<AddUserProps> = ({ onUserAdded }) => {
       <div>
         <h3>Add Data</h3>
         <form onSubmit={formik.handleSubmit}>
-          <input
+          <TextField
             type="text"
             name="firstName"
             placeholder="First name"
@@ -61,7 +62,7 @@ const AddUser: React.FC<AddUserProps> = ({ onUserAdded }) => {
             onChange={formik.handleChange}
           />
           {formik.errors.firstName && <div>{formik.errors.firstName}</div>}
-          <input
+          <TextField
             type="text"
             name="lastName"
             placeholder="Last name"
@@ -70,7 +71,7 @@ const AddUser: React.FC<AddUserProps> = ({ onUserAdded }) => {
             onChange={formik.handleChange}
           />
           {formik.errors.lastName && <div>{formik.errors.lastName}</div>}
-          <input
+          <TextField
             type="date"
             name="createdAt"
             value={formik.values.createdAt}

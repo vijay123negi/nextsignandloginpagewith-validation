@@ -3,6 +3,7 @@ import { useFormik } from "formik";
 import { drawerloginSchema } from "../schema/page";
 import React, { useState } from "react";
 import axios from "axios";
+import { TextField } from "@mui/material";
 
 interface User {
   id: string;
@@ -51,7 +52,7 @@ const UpdateUser: React.FC<UpdateUserProps> = ({ onUserUpdated }) => {
     <div>
       <h3>Edit Data</h3>
       <form onSubmit={formik.handleSubmit}>
-        <input
+        <TextField
           type="text"
           name="id"
           placeholder="Id"
@@ -60,7 +61,7 @@ const UpdateUser: React.FC<UpdateUserProps> = ({ onUserUpdated }) => {
           onChange={formik.handleChange}
         />
         {formik.errors.id && <div>{formik.errors.id}</div>}
-        <input
+        <TextField
           type="text"
           name="firstName"
           placeholder="First name"
@@ -69,7 +70,7 @@ const UpdateUser: React.FC<UpdateUserProps> = ({ onUserUpdated }) => {
           onChange={formik.handleChange}
         />
         {formik.errors.firstName && <div>{formik.errors.firstName}</div>}
-        <input
+        <TextField
           type="text"
           name="lastName"
           placeholder="Last name"
@@ -78,7 +79,7 @@ const UpdateUser: React.FC<UpdateUserProps> = ({ onUserUpdated }) => {
           onChange={formik.handleChange}
         />
         {formik.errors.lastName && <div>{formik.errors.lastName}</div>}
-        <input
+        <TextField
           type="date"
           name="createdAt"
           value={formik.values.createdAt}
