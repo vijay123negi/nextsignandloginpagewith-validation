@@ -125,12 +125,14 @@ export default function PersistentDrawerRight() {
 
   const handleUserAdded = (newUser: User) => {
     setUsers([...users, newUser]);
+    setOpen(false);
     //setShowForm(false);
   };
   const handleUserUpdated = (updatedUser: User) => {
     setUsers(
       users.map((user) => (user.id === updatedUser.id ? updatedUser : user))
     );
+    setOpen(false);
     //setShowForm(false);
   };
 
