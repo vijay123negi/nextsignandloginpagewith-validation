@@ -28,7 +28,7 @@ const UpdateUser: React.FC<UpdateUserProps> = ({ onUserUpdated }) => {
     onSubmit: async (values, { resetForm }) => {
       if (!confirm("Do you want to update?")) return;
 
-      const newUser: Omit<User, "id"> = {
+      const updatedUser: Omit<User, "id"> = {
         firstName: values.firstName,
         lastName: values.lastName,
         createdAt: values.createdAt,
@@ -37,7 +37,7 @@ const UpdateUser: React.FC<UpdateUserProps> = ({ onUserUpdated }) => {
       try {
         const response = await axios.put(
           `https://660a54c30f324a9a2884ab85.mockapi.io/users/${values.id}`,
-          newUser
+          updatedUser
         );
         console.log("PUT response:", response.data);
         resetForm(); 
