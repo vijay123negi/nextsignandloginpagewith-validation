@@ -39,7 +39,7 @@ const UpdateUser: React.FC<UpdateUserProps> = ({ onUserUpdated }) => {
           `https://660a54c30f324a9a2884ab85.mockapi.io/users/${values.id}`,
           newUser
         );
-        console.log("POST response:", response.data);
+        console.log("PUT response:", response.data);
         resetForm(); 
         onUserUpdated(response.data); 
       } catch (error) {
