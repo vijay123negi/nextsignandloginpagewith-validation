@@ -40,8 +40,8 @@ const AddUser: React.FC<AddUserProps> = ({ onUserAdded }) => {
           newUser
         );
         console.log("POST response:", response.data);
-        resetForm(); 
-        onUserAdded(response.data); 
+        resetForm();
+        onUserAdded(response.data);
       } catch (error) {
         console.error("Failed to add user:", error);
       }
