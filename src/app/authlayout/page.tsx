@@ -1,3 +1,4 @@
+"use client"
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -22,7 +23,9 @@ const Authlayout: React.FC<AuthLayoutProps> = ({ children }) => {
     return <h1>Loading...</h1>;
   }
 
-  return authenticated ? <>{children}</> : null;
+  return (
+    authenticated ? <>{children}</> : null
+  );
 
 };
 export default Authlayout;

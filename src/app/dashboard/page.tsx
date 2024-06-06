@@ -1,6 +1,5 @@
 "use client";
-
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -19,11 +18,9 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import AddIcon from "@mui/icons-material/Add";
-import EditIcon from "@mui/icons-material/Edit";
-import AddUser from "../addicon/page";
-import MuiTable from "../muitable/page";
+import DataGridDemo from "./datagrid";
+import FormComponent from "./form";
 import axios from "axios";
-import UpdateUser from "../addicon/updateUser";
 import Authlayout from "../authlayout/page";
 
 const drawerWidth = 240;
@@ -83,14 +80,22 @@ interface User {
   lastName: string;
   createdAt: string;
 }
+
 export default function PersistentDrawerRight() {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
-  const [showForm, setShowForm] = React.useState(false);
-  const [users, setUsers] = React.useState<User[]>([]);
-  const [addOrEdit, setAddOrEdit] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+  const [users, setUsers] = useState<User[]>([]);
+  const [userId, setUserId] = useState("");
+  const [userData, setUserData] = useState<User>({
+    id: "",
+    firstName: "",
+    lastName: "",
+    createdAt: new Date().toISOString().split("T")[0],
+  });
+  const [addOrEdit, setAddOrEdit] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get(
@@ -105,6 +110,16 @@ export default function PersistentDrawerRight() {
     fetchUsers();
   }, []);
 
+  const deleteUser = async (id: string) => {
+    try {
+      await axios.delete(
+        `https://660a54c30f324a9a2884ab85.mockapi.io/users/${id}`
+      );
+      setUsers(users.filter((user) => user.id !== id)); 
+    } catch (error) {
+      console.error("Failed to delete user:", error);
+    }
+  };
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -114,19 +129,32 @@ export default function PersistentDrawerRight() {
   };
 
   const handleAddClick = () => {
+    setUserData({ id: "", firstName: "", lastName: "", createdAt: "" });
     setShowForm(true);
     setAddOrEdit(true);
   };
-
-  const handleEditClick = () => {
-    setShowForm(true);
-    setAddOrEdit(false);
-  };
-
   const handleUserAdded = (newUser: User) => {
     setUsers([...users, newUser]);
     setOpen(false);
-    setShowForm(false);
+  };
+
+  const handleEdit = (id: string) => {
+    console.log(`Editing row with id ${id}`);
+
+    const user = users.find((user) => user.id === id);
+
+    if (user) {
+      setUserId(id);
+      setUserData({ ...user });
+      setShowForm(true);
+      setOpen(true);
+      setAddOrEdit(false);
+    }
+  };
+
+  const handleDelete = (id: string) => {
+    console.log(`Deleting row with id ${id}`);
+    if (confirm("Do you want to delete?")) deleteUser(id);
   };
   const handleUserUpdated = (updatedUser: User) => {
     setUsers(
@@ -135,87 +163,81 @@ export default function PersistentDrawerRight() {
     setOpen(false);
     setShowForm(false);
   };
-
   return (
     <Authlayout>
-      <Box sx={{ display: "flex" }}>
-        <CssBaseline />
-        <AppBar position="fixed" open={open}>
-          <Toolbar>
-            <Typography
-              variant="h6"
-              noWrap
-              sx={{ flexGrow: 1 }}
-              component="div"
-            >
-              Employee Details
-            </Typography>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              edge="end"
-              onClick={handleDrawerOpen}
-              sx={{ ...(open && { display: "none" }) }}
-            >
-              <MenuIcon />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-        <Main open={open}>
-          <DrawerHeader />
-          <MuiTable rows={users} />
-          <AddIcon />
-        </Main>
-        <Drawer
-          sx={{
+    <Box sx={{ display: "flex" }}>
+      <CssBaseline />
+      <AppBar position="fixed" open={open}>
+        <Toolbar>
+          <Typography variant="h6" noWrap sx={{ flexGrow: 1 }} component="div">
+            Employee Table
+          </Typography>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="end"
+            onClick={handleDrawerOpen}
+            sx={{ ...(open && { display: "none" }) }}
+          >
+            <MenuIcon />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+      <Main open={open}>
+        <DrawerHeader />
+        <DataGridDemo
+          rows={users}
+          handleEdit={handleEdit}
+          handleDelete={handleDelete}
+        />
+      </Main>
+      <Drawer
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          "& .MuiDrawer-paper": {
             width: drawerWidth,
-            flexShrink: 0,
-            "& .MuiDrawer-paper": {
-              width: drawerWidth,
-            },
-          }}
-          variant="persistent"
-          anchor="right"
-          open={open}
-        >
-          <DrawerHeader>
-            <IconButton onClick={handleDrawerClose}>
-              {theme.direction === "rtl" ? (
-                <ChevronLeftIcon />
-              ) : (
-                <ChevronRightIcon />
-              )}
-            </IconButton>
-          </DrawerHeader>
-          <Divider />
-          <List>
-            {["Add", "Edit"].map((text) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton
-                  onClick={
-                    text === "Add"
-                      ? handleAddClick
-                      : text === "Edit"
-                      ? handleEditClick
-                      : undefined
-                  }
-                >
-                  <ListItemIcon>
-                    {text === "Add" ? <AddIcon /> : <EditIcon />}
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-          {showForm &&
-            (addOrEdit ? (
-              <AddUser onUserAdded={handleUserAdded} />
+          },
+        }}
+        variant="persistent"
+        anchor="right"
+        open={open}
+      >
+        <DrawerHeader>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === "rtl" ? (
+              <ChevronLeftIcon />
             ) : (
-              <UpdateUser onUserUpdated={handleUserUpdated} />
-            ))}
-        </Drawer>
-      </Box>
+              <ChevronRightIcon />
+            )}
+          </IconButton>
+        </DrawerHeader>
+        <Divider />
+        <List>
+          <ListItem disablePadding>
+            <ListItemButton onClick={handleAddClick}>
+              <ListItemIcon>{<AddIcon />}</ListItemIcon>
+              <ListItemText primary={"ADD"} />
+            </ListItemButton>
+          </ListItem>
+        </List>
+        {showForm &&
+          (addOrEdit ? (
+            <FormComponent
+              onUserAdded={handleUserAdded}
+              userData={userData}
+              action="add"
+            />
+          ) : (
+            <FormComponent
+              onUserUpdated={handleUserUpdated}
+              userData={userData}
+              action="edit"
+              userId={userId}
+            />
+          ))}
+      </Drawer>
+    </Box>
     </Authlayout>
   );
 }
