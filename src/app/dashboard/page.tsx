@@ -115,7 +115,7 @@ export default function PersistentDrawerRight() {
       await axios.delete(
         `https://660a54c30f324a9a2884ab85.mockapi.io/users/${id}`
       );
-      setUsers(users.filter((user) => user.id !== id)); 
+      setUsers(users.filter((user) => user.id !== id));
     } catch (error) {
       console.error("Failed to delete user:", error);
     }
@@ -165,79 +165,84 @@ export default function PersistentDrawerRight() {
   };
   return (
     <Authlayout>
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <AppBar position="fixed" open={open}>
-        <Toolbar>
-          <Typography variant="h6" noWrap sx={{ flexGrow: 1 }} component="div">
-            Employee Table
-          </Typography>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="end"
-            onClick={handleDrawerOpen}
-            sx={{ ...(open && { display: "none" }) }}
-          >
-            <MenuIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-      <Main open={open}>
-        <DrawerHeader />
-        <DataGridDemo
-          rows={users}
-          handleEdit={handleEdit}
-          handleDelete={handleDelete}
-        />
-      </Main>
-      <Drawer
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          "& .MuiDrawer-paper": {
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <AppBar position="fixed" open={open}>
+          <Toolbar>
+            <Typography
+              variant="h6"
+              noWrap
+              sx={{ flexGrow: 1 }}
+              component="div"
+            >
+              Employee Table
+            </Typography>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="end"
+              onClick={handleDrawerOpen}
+              sx={{ ...(open && { display: "none" }) }}
+            >
+              <MenuIcon />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+        <Main open={open}>
+          <DrawerHeader />
+          <DataGridDemo
+            rows={users}
+            handleEdit={handleEdit}
+            handleDelete={handleDelete}
+          />
+        </Main>
+        <Drawer
+          sx={{
             width: drawerWidth,
-          },
-        }}
-        variant="persistent"
-        anchor="right"
-        open={open}
-      >
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "rtl" ? (
-              <ChevronLeftIcon />
+            flexShrink: 0,
+            "& .MuiDrawer-paper": {
+              width: drawerWidth,
+            },
+          }}
+          variant="persistent"
+          anchor="right"
+          open={open}
+        >
+          <DrawerHeader>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === "rtl" ? (
+                <ChevronLeftIcon />
+              ) : (
+                <ChevronRightIcon />
+              )}
+            </IconButton>
+          </DrawerHeader>
+          <Divider />
+          <List>
+            <ListItem disablePadding>
+              <ListItemButton onClick={handleAddClick}>
+                <ListItemIcon>{<AddIcon />}</ListItemIcon>
+                <ListItemText primary={"ADD"} />
+              </ListItemButton>
+            </ListItem>
+          </List>
+          {showForm &&
+            (addOrEdit ? (
+              <FormComponent
+                onUserAdded={handleUserAdded}
+                userData={userData}
+                action="add"
+              />
             ) : (
-              <ChevronRightIcon />
-            )}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <List>
-          <ListItem disablePadding>
-            <ListItemButton onClick={handleAddClick}>
-              <ListItemIcon>{<AddIcon />}</ListItemIcon>
-              <ListItemText primary={"ADD"} />
-            </ListItemButton>
-          </ListItem>
-        </List>
-        {showForm &&
-          (addOrEdit ? (
-            <FormComponent
-              onUserAdded={handleUserAdded}
-              userData={userData}
-              action="add"
-            />
-          ) : (
-            <FormComponent
-              onUserUpdated={handleUserUpdated}
-              userData={userData}
-              action="edit"
-              userId={userId}
-            />
-          ))}
-      </Drawer>
-    </Box>
+              <FormComponent
+                onUserUpdated={handleUserUpdated}
+                userData={userData}
+                action="edit"
+                userId={userId}
+              />
+            ))}
+        </Drawer>
+      </Box>
     </Authlayout>
   );
 }
